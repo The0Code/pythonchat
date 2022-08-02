@@ -3,7 +3,7 @@ import threading
 import sys
 
 if len(sys.argv) != 3:
-    print("corect useage client.py <port> <adress>")
+    print("corect useage client.py <port> <address>")
     sys.exit()
 
 host = sys.argv[2]
