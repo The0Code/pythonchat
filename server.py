@@ -7,7 +7,7 @@ clients = []
 clientsaddr = []
 
 if len(sys.argv) != 2:
-    print("corect usege server.py <port>")
+    print("correct usage server.py <port>")
     sys.exit()
 
 host = ""
@@ -18,6 +18,12 @@ s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 s.bind((host, port))
 s.listen()
 
+def broadcast(m):
+    for conn in clients:
+        if clientsaddr != addr:
+            conn.send(m)
+
+
 def mainloop(conn, addr):
     while True:
         try:
@@ -26,11 +32,10 @@ def mainloop(conn, addr):
         except Exception as e:
             conn.close()
             print("[-]{c} disconnected!".format(c = addr))
+            broadcast("[-]{c} disconnected!".format(c = addr).encode())
             break
         else:
-            for conn in clients:
-                if clientsaddr != addr:
-                    conn.send(m)
+            broadcast(m)
 
 while True:
     conn, addr = s.accept()
@@ -40,5 +45,7 @@ while True:
     t = threading.Thread(target=mainloop, args=(conn, addr,))
     t.daemon = True
     t.start()
+    broadcast("[+]{a} connected!".format(a = addr).encode())
+
 
 
