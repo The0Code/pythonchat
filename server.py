@@ -31,6 +31,7 @@ def mainloop(conn, addr):
             print(m.decode())
         except Exception as e:
             conn.close()
+            clients.remove(conn)
             print("[-]{c} disconnected!".format(c = addr))
             broadcast("[-]{c} disconnected!".format(c = addr).encode())
             break
