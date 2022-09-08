@@ -2,12 +2,14 @@ import socket as sk
 import threading
 import sys
 
-if len(sys.argv) != 3:
-    print("correct usage client.py <port> <address>")
-    sys.exit()
+#if len(sys.argv) != 3:
+#    print("correct usage client.py <port> <address>")
+#    sys.exit()
 
-host = sys.argv[2]
-port = int(sys.argv[1])
+
+
+host = input("address>")
+port = int(input("port>"))
 
 s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 s.connect((host, port))
