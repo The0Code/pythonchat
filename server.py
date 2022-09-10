@@ -1,4 +1,3 @@
-from pydoc import cli
 import socket as sk
 import threading
 import sys
