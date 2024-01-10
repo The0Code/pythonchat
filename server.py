@@ -17,10 +17,12 @@ s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 s.bind((host, port))
 s.listen()
 
-def broadcast(m):
-    for conn in clients:
-        if clientsaddr != addr:
-            conn.send(m)
+def broadcast(m, conn):
+    for conn1 in clients:
+                if conn1 != conn:
+                    conn1.send(m)
+                else:
+                    pass
 
 
 def mainloop(conn, addr):
@@ -32,11 +34,11 @@ def mainloop(conn, addr):
             conn.close()
             clients.remove(conn)
             print("[-]{c} disconnected!".format(c = addr))
-            broadcast("[-]{c} disconnected!".format(c = addr).encode())
+            broadcast("[-]{c} disconnected!".format(c = addr).encode(), conn)
             break
         else:
-            broadcast(m)
-
+            broadcast(m, conn)
+                
 while True:
     conn, addr = s.accept()
     print("[+]{a} connected!".format(a = addr))
@@ -45,7 +47,4 @@ while True:
     t = threading.Thread(target=mainloop, args=(conn, addr,))
     t.daemon = True
     t.start()
-    broadcast("[+]{a} connected!".format(a = addr).encode())
-
-
-
+    #broadcast("[+]{a} connected!".format(a = addr), conn)

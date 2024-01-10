@@ -15,23 +15,30 @@ s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 s.connect((host, port))
 
 print('''
-/\/\/\/\/\/\/\/\/\/\/\/\/\/
-         CHAT-O
-\/\/\/\/\/\/\/\/\/\/\/\/\/\\
+/\/\/\/\/\/\/\/\/\/\/\/\/\\
+|         CHAT-O                 |
+\/\/\/\/\/\/\/\/\/\/\/\/\/
 ''')
 name = input("enter your name >")
+s.send("{j} loged in".format(j = name).encode())
 
 def res():
     while True:
-        m = s.recv(2048).decode()
-        print(m)
+        try:
+            m = s.recv(2048).decode()
+            print(m)
+        except:
+            s.send("{a} > disconnected".format(a = name).encode)
 
 
 def send():
     while True:
-        ms = input()
-        ms = "{n}: {m}".format(n = name, m = ms)
-        s.send(ms.encode())
+        try:
+            ms = input()
+            ms = "{n}: {m}".format(n = name, m = ms)
+            s.send(ms.encode())
+        except:
+            s.send("{a} > disconnected".format(a = name).encode)
 
 tr = threading.Thread(target=res)
 tr.start()

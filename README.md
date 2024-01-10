@@ -4,5 +4,5 @@ _________________________________________________________
 how to use:
 ```
 server.py port
-client.py port address
+client.py
 ```
