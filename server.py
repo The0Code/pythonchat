@@ -12,39 +12,38 @@ if len(sys.argv) != 2:
 host = ""
 port = int(sys.argv[1])
 
-s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
+socket = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 
-s.bind((host, port))
-s.listen()
+socket.bind((host, port))
+socket.listen()
 
-def broadcast(m, conn):
+def broadcast(message, connection):
     for conn1 in clients:
-                if conn1 != conn:
-                    conn1.send(m)
+                if conn1 != connection:
+                    conn1.send(message)
                 else:
                     pass
 
 
-def mainloop(conn, addr):
+def mainloop(connection, ip_address):
     while True:
         try:
-            m = conn.recv(2048)
-            print(m.decode())
+            message = connection.recv(2048)
+            print(message.decode())
         except Exception as e:
-            conn.close()
-            clients.remove(conn)
-            print("[-]{c} disconnected!".format(c = addr))
-            broadcast("[-]{c} disconnected!".format(c = addr).encode(), conn)
+            connection.close()
+            clients.remove(connection)
+            print("[-]{c} disconnected!".format(c = ip_address))
+            broadcast("[-]{c} disconnected!".format(c = ip_address).encode(), connection)
             break
         else:
-            broadcast(m, conn)
+            broadcast(message, connection)
                 
 while True:
-    conn, addr = s.accept()
-    print("[+]{a} connected!".format(a = addr))
-    clients.append(conn)
-    clientsaddr.append(addr)
-    t = threading.Thread(target=mainloop, args=(conn, addr,))
+    connection, ip_address = socket.accept()
+    print("[+]{a} connected!".format(a = ip_address))
+    clients.append(connection)
+    clientsaddr.append(ip_address)
+    t = threading.Thread(target=mainloop, args=(connection, ip_address,))
     t.daemon = True
     t.start()
-    #broadcast("[+]{a} connected!".format(a = addr), conn)

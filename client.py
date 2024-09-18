@@ -2,11 +2,12 @@ import socket as sk
 import threading
 import sys
 
-#if len(sys.argv) != 3:
-#    print("correct usage client.py <port> <address>")
-#    sys.exit()
-
-
+print('''
+ ________________________
+/                        \\
+|         CHAT-O         |
+\\________________________/
+''')
 
 host = input("address>")
 port = int(input("port>"))
@@ -14,11 +15,7 @@ port = int(input("port>"))
 s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
 s.connect((host, port))
 
-print('''
-/\/\/\/\/\/\/\/\/\/\/\/\/\\
-|         CHAT-O                 |
-\/\/\/\/\/\/\/\/\/\/\/\/\/
-''')
+
 name = input("enter your name >")
 s.send("{j} loged in".format(j = name).encode())
 
