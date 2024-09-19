@@ -1,6 +1,5 @@
 import socket as sk
 import threading
-import sys
 
 print('''
  ________________________
@@ -12,33 +11,33 @@ print('''
 host = input("address>")
 port = int(input("port>"))
 
-s = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
-s.connect((host, port))
+socket = sk.socket(sk.AF_INET, sk.SOCK_STREAM)
+socket.connect((host, port))
 
 
 name = input("enter your name >")
-s.send("{j} loged in".format(j = name).encode())
+socket.send("{j} loged in".format(j = name).encode())
 
-def res():
+def receive():
     while True:
         try:
-            m = s.recv(2048).decode()
-            print(m)
+            message = socket.recv(2048).decode()
+            print(message)
         except:
-            s.send("{a} > disconnected".format(a = name).encode)
+            socket.send("{a} > disconnected".format(a = name).encode())
 
 
 def send():
     while True:
         try:
-            ms = input()
-            ms = "{n}: {m}".format(n = name, m = ms)
-            s.send(ms.encode())
+            message = input()
+            message = "{n}: {message}".format(n = name, message = message)
+            socket.send(message.encode())
         except:
-            s.send("{a} > disconnected".format(a = name).encode)
+            socket.send("{a} > disconnected".format(a = name).encode())
 
-tr = threading.Thread(target=res)
-tr.start()
+receivingthread = threading.Thread(target=receive)
+receivingthread.start()
 
-ts = threading.Thread(target=send)
-ts.start()
+sendingthread = threading.Thread(target=send)
+sendingthread.start()
